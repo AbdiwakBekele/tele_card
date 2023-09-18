@@ -6,21 +6,53 @@
 
 <div class="container-fluid px-4">
     <h1 class="mt-4">Stock Dashboard</h1>
-    <ol class="breadcrumb mb-4">
-        <li class="breadcrumb-item active">Total Stock Each</li>
-    </ol>
-    <div class="row">
 
+    <div class="row">
         <div class="col">
             <div class="card bg-primary text-white mb-4">
                 <div class="card-body center">
                     <h5> Total Stock</h5>
+                    <hr>
+                    {{ number_format($total_stock, 2, '.', ',') }} ETB
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body center">
+                    <h5>Available Amount</h5>
+                    <hr>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body center">
+                    <h5>Today's Consumption</h5>
+                    <hr>
+
+                    {{ number_format($today_consumption, 2, '.', ',') }} ETB
+                </div>
+            </div>
+        </div>
+
+        <div class="col">
+            <div class="card bg-primary text-white mb-4">
+                <div class="card-body center">
+                    <h5>This Month's Consumption</h5>
+                    <hr>
+                    {{ number_format($thisMonth_consumption, 2, '.', ',') }} ETB
                 </div>
             </div>
         </div>
 
 
+
     </div>
+
     <div class="row">
         <div class="col-xl-6">
             <div class="card mb-4">
@@ -36,7 +68,7 @@
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-chart-bar me-1"></i>
-                    Bar Chart Example
+                    Available Stock Each
                 </div>
                 <div class="card-body"><canvas id="myStock" width="100%" height="40"></canvas>
                 </div>
@@ -533,24 +565,12 @@
     </div>
 </div>
 
-@php
-$chartData = [];
-$maxStock = 0;
 
-foreach ($products as $product) {
 
-$chartData[] = $product->count_stock;
+<div id="maxStock" data-max-stock="{{ $maxStock }}"> {{ $maxStock }}</div>
+<script>
+var chartData = @json($chartData);
+var maxStock = Number(document.getElementById('maxStock').getAttribute('data-max-stock'));
+</script>
 
-if($maxStock <= $product->count_stock){
-    $maxStock = $product->count_stock;
-    }
-    }
-    @endphp
-
-    <div id="maxStock" data-max-stock="{{ $maxStock }}"> {{ $maxStock }}</div>
-    <script>
-    var chartData = @json($chartData);
-    var maxStock = Number(document.getElementById('maxStock').getAttribute('data-max-stock'));
-    </script>
-
-    @endsection
+@endsection
