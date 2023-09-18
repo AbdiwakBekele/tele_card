@@ -20,7 +20,7 @@
             </a>
             <div class="collapse" id="collapseStock" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                 <nav class="sb-sidenav-menu-nested nav">
-                    <a class="nav-link" href="#">Stock Dashboard</a>
+                    <a class="nav-link" href="inventory_dashboard">Stock Dashboard</a>
                     <a class="nav-link" href="#">E-Pin Import</a>
                     <a class="nav-link" href="#">E-Pin Query</a>
                     <a class="nav-link" href="#">Stock Movement</a>

@@ -3,15 +3,21 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class InventoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        //
+    public function inventoryDashboard(){
+        $products=Product::all();
+        return view('stock.stockDashboard', compact('products'));
+    }
+
+
+    public function index(){
+        
     }
 
     /**

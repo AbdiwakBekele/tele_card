@@ -2,17 +2,18 @@
 Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
 Chart.defaults.global.defaultFontColor = '#292b2c';
 
-// Bar Chart Example
-var ctx = document.getElementById("myBarChart");
+
+// Bar Chart Stock
+var ctx = document.getElementById("myStock");
 var myLineChart = new Chart(ctx, {
   type: 'bar',
   data: {
-    labels: ["January", "February", "March", "April", "May", "June"],
+    labels: ["5", "10", "15", "25", "50", "100", "250", "500", "1000"],
     datasets: [{
-      label: "Revenue",
+      label: "Stock",
       backgroundColor: "rgba(2,117,216,1)",
       borderColor: "rgba(2,117,216,1)",
-      data: [4215, 5312, 6251, 7841, 9821, 14984],
+      data: chartData,
     }],
   },
   options: {
@@ -25,13 +26,13 @@ var myLineChart = new Chart(ctx, {
           display: false
         },
         ticks: {
-          maxTicksLimit: 6
+          maxTicksLimit: 9
         }
       }],
       yAxes: [{
         ticks: {
           min: 0,
-          max: 15000,
+          max: maxStock,
           maxTicksLimit: 5
         },
         gridLines: {

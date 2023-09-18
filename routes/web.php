@@ -6,8 +6,12 @@ use App\Models\Sale;
 use App\Models\Group;
 use App\Models\User;
 use App\Models\Product;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InventoryController;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use App\Events\InventoryCreated;
+use App\Events\InventoryDeleted;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -219,9 +223,12 @@ Route::get('sales_dates', function(){
 });
 
 
-/**********************************************/
+/*
+|--------------------------------------------------------------------------
+| Factory Data's
+|--------------------------------------------------------------------------
+*/
 
-// Group Factory
 Route::get('group_factory', function(){
     Group::factory()->times(10)->create();
 });
@@ -236,11 +243,7 @@ Route::get('product_factory', function(){
 });
 
 Route::get('inventory_factory', function(){
-    Inventory::factory()->times(500)->create();
-});
-
-Route::get('inventory_factory', function(){
-    Inventory::factory()->times(500)->create();
+    Inventory::factory()->times(1)->create();
 });
 
 Route::get('sales_factory', function(){
@@ -248,6 +251,39 @@ Route::get('sales_factory', function(){
 });
 
 
-Route::get('/', function () {
-    return view('dashboard');
+/*
+|--------------------------------------------------------------------------
+| Dashboard
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/', [DashboardController::class, 'index']);
+
+
+
+/*
+|--------------------------------------------------------------------------
+| Stock
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/inventory_dashboard', [InventoryController::class, 'inventoryDashboard']);
+Route::resource('inventory', InventoryController::class);
+
+Route::get('/test_inv/{id}', function($id){
+    $product = Product::find($id);
+    $inventory = new Inventory();
+    $product->inventories()->save($inventory);
+    event(new InventoryCreated($inventory));
+
+});
+
+Route::get('/delete_inv/{id}', function($id){
+
+    $inventory = Inventory::find($id);
+    $product = $inventory->product;
+    $inventory->delete();
+
+    event(new InventoryDeleted($product));
+
 });
