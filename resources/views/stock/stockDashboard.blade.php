@@ -84,7 +84,6 @@ var chartStockData = @json($chartStockData);
 var chartTodaySalesData = @json($chartTodaySalesData);
 var maxStock = Number(document.getElementById('maxStock').getAttribute('data-max-stock'));
 var maxTodaySales = Number(document.getElementById('maxTodaySales').getAttribute('data-max-today-sales'));
-console.log(maxTodaySales);
 </script>
 
 @endsection
