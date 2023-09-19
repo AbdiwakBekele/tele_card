@@ -58,7 +58,7 @@
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-chart-area me-1"></i>
-                    Area Chart Example
+                    Sales History
                 </div>
                 <div class="card-body"><canvas id="myAreaChart" width="100%" height="40"></canvas>
                 </div>
@@ -68,7 +68,7 @@
             <div class="card mb-4">
                 <div class="card-header">
                     <i class="fas fa-chart-bar me-1"></i>
-                    Available Stock Each
+                    Each Available Stock
                 </div>
                 <div class="card-body"><canvas id="myStock" width="100%" height="40"></canvas>
                 </div>

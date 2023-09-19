@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use App\Events\InventoryCreated;
 use App\Events\InventoryDeleted;
+use App\Events\DailySalesEvent;
+use App\Events\MonthlySalesEvent;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -247,7 +249,9 @@ Route::get('inventory_factory', function(){
 });
 
 Route::get('sales_factory', function(){
-    Sale::factory()->times(500)->create();
+    $sale = Sale::factory()->times(1)->create()->first();
+    event(new DailySalesEvent($sale));
+    event(new MonthlySalesEvent($sale));
 });
 
 
@@ -283,7 +287,6 @@ Route::get('/delete_inv/{id}', function($id){
     $inventory = Inventory::find($id);
     $product = $inventory->product;
     $inventory->delete();
-
     event(new InventoryDeleted($product));
 
 });
