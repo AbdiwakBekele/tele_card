@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Sale;
+use App\Models\DailySale;
+use App\Models\MonthlySale;
+use Carbon\Carbon;
 
 class InventoryController extends Controller
 {
@@ -14,32 +17,32 @@ class InventoryController extends Controller
     public function inventoryDashboard(){
         $today_consumption = 0;
         $thisMonth_consumption = 0;
-        $chartData = [];
+        $chartStockData = [];
+        $chartTodaySalesData = [];
         $maxStock = 0;
+        $maxTodaySales = 0;
         $total_stock = 0;
 
+        // Each Product Available Stock
         $products=Product::all();
         foreach ($products as $product) {
-            $chartData[] = $product->count_stock;
+            $chartStockData[] = $product->count_stock;
+            $chartTodaySalesData[] = $product->dailySales->where('date', now()->toDateString())->first()->amount;
             $total_stock += $product->count_stock * intval($product->product_name);
             if($maxStock <= $product->count_stock){
                 $maxStock = $product->count_stock;
             }
         }
-                
-        $today_sales = Sale::whereDate('created_at', today())->get();
-        foreach($today_sales as $today_sale){
-            $product_name = $today_sale->product->product_name;
-            $today_consumption += intval($product_name);
-        }
+        
+        // Today Sales
+        $today_sales = array_sum($chartTodaySalesData);
+        $maxTodaySales = max($chartTodaySalesData);
 
-        $thisMonthSales = Sale::whereBetween('created_at', [now()->startOfMonth(), now()->endOfMonth()])->get();
-        foreach($thisMonthSales as $thisMonthSale){
-            $product_name = $thisMonthSale->product->product_name;
-            $thisMonth_consumption += intval($product_name);
-        }
+        // This Month Sales
+        $currentYearMonth = Carbon::now()->format('Y-m');
+        $thisMonth_sales = MonthlySale::where('year_month', $currentYearMonth)->sum('amount');
 
-        return view('stock.stockDashboard', compact('products', 'today_consumption', 'thisMonth_consumption', 'chartData', 'maxStock', 'total_stock'));
+        return view('stock.stockDashboard', compact('products', 'today_sales', 'thisMonth_sales', 'chartStockData', 'maxStock', 'chartTodaySalesData', 'maxTodaySales', 'total_stock'));
     }
 
 

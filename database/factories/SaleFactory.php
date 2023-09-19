@@ -28,8 +28,8 @@ class SaleFactory extends Factory
             'download_id'=>null,
             'recept_status'=> $this->faker->randomElement(['Active', 'Pending']),
             'month'=>$this->faker->numberBetween(1,12),
-            'created_at' => $this->faker->dateTimeBetween('-3 months', 'now'),
-            'updated_at' => $this->faker->dateTimeBetween('-3 months', 'now'),
+            // 'created_at' => $this->faker->dateTimeBetween('-3 months', 'now'),
+            // 'updated_at' => $this->faker->dateTimeBetween('-3 months', 'now'),
         ];
     }
 }

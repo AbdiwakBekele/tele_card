@@ -248,10 +248,13 @@ Route::get('inventory_factory', function(){
     Inventory::factory()->times(1)->create();
 });
 
-Route::get('sales_factory', function(){
-    $sale = Sale::factory()->times(1)->create()->first();
-    event(new DailySalesEvent($sale));
-    event(new MonthlySalesEvent($sale));
+Route::get('sales_factory/{times}', function($times){
+    for($i=0; $i<$times; $i++){
+        $sale = Sale::factory()->times(1)->create()->first();
+        event(new DailySalesEvent($sale));
+        event(new MonthlySalesEvent($sale));
+    }
+    
 });
 
 
@@ -283,7 +286,7 @@ Route::get('/test_inv/{id}', function($id){
 });
 
 Route::get('/delete_inv/{id}', function($id){
-
+    
     $inventory = Inventory::find($id);
     $product = $inventory->product;
     $inventory->delete();
