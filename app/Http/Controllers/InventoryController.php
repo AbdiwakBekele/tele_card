@@ -27,7 +27,14 @@ class InventoryController extends Controller
         $products=Product::all();
         foreach ($products as $product) {
             $chartStockData[] = $product->count_stock;
-            $chartTodaySalesData[] = $product->dailySales->where('date', now()->toDateString())->first()->amount;
+            $dailySaleProduct = $product->dailySales->where('date', now()->toDateString())->first();
+
+            if ($dailySaleProduct) {
+                $chartTodaySalesData[] = $dailySaleProduct->amount;
+            } else {
+                $chartTodaySalesData[] = 0; // Or handle it in some other way
+            }
+
             $total_stock += $product->count_stock * intval($product->product_name);
             if($maxStock <= $product->count_stock){
                 $maxStock = $product->count_stock;
