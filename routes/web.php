@@ -244,8 +244,12 @@ Route::get('product_factory', function(){
     Product::factory()->times(9)->create();
 });
 
-Route::get('inventory_factory', function(){
-    Inventory::factory()->times(1)->create();
+Route::get('inventory_factory/{times}', function($times){
+
+    for($i=0; $i<$times; $i++){
+        $inventory = Inventory::factory()->times(1)->create()->first();
+        event(new InventoryCreated($inventory));
+    }
 });
 
 Route::get('sales_factory/{times}', function($times){
@@ -253,8 +257,7 @@ Route::get('sales_factory/{times}', function($times){
         $sale = Sale::factory()->times(1)->create()->first();
         event(new DailySalesEvent($sale));
         event(new MonthlySalesEvent($sale));
-    }
-    
+    } 
 });
 
 
@@ -285,11 +288,11 @@ Route::get('/test_inv/{id}', function($id){
 
 });
 
-Route::get('/delete_inv/{id}', function($id){
+// Route::get('/delete_inv/{id}', function($id){
     
-    $inventory = Inventory::find($id);
-    $product = $inventory->product;
-    $inventory->delete();
-    event(new InventoryDeleted($product));
+//     $inventory = Inventory::find($id);
+//     $product = $inventory->product;
+//     $inventory->delete();
+//     event(new InventoryDeleted($product));
 
-});
+// });
